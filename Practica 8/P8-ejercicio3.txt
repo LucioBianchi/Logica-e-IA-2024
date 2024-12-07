@@ -1,0 +1,69 @@
+% Base de conocimientos
+hombre('Juan').
+hombre('Carlos').
+hombre('Pedro').
+hombre('Luis').
+
+mujer('Maria').
+mujer('Ana').
+mujer('Lucia').
+mujer('Elena').
+
+padre('Juan', 'Carlos').
+padre('Juan', 'Ana').
+padre('Pedro', 'Luis').
+padre('Pedro', 'Lucia').
+
+madre('Maria', 'Carlos').
+madre('Maria', 'Ana').
+madre('Elena', 'Luis').
+madre('Elena', 'Lucia').
+
+% Reglas implementadas
+
+progenitor(Progenitor, Hijo) :-
+    padre(Progenitor, Hijo).
+progenitor(Progenitor, Hijo) :-
+    madre(Progenitor, Hijo).
+
+antepasado(Antepasado, Descendiente) :-
+    progenitor(Antepasado, Descendiente).
+antepasado(Antepasado, Descendiente) :-
+    progenitor(Antepasado, Intermedio),
+    antepasado(Intermedio, Descendiente).
+
+hermano(Hermano, Persona) :-
+    hombre(Hermano),
+    progenitor(Progenitor, Hermano),
+    progenitor(Progenitor, Persona),
+    Hermano \= Persona.
+
+hermana(Hermana, Persona) :-
+    mujer(Hermana),
+    progenitor(Progenitor, Hermana),
+    progenitor(Progenitor, Persona),
+    Hermana \= Persona.
+
+abuelo(Abuelo, Nieto) :-
+    hombre(Abuelo),
+    progenitor(Abuelo, Padre),
+    progenitor(Padre, Nieto).
+
+abuela(Abuela, Nieto) :-
+    mujer(Abuela),
+    progenitor(Abuela, Madre),
+    progenitor(Madre, Nieto).
+
+% Ejemplos de consultas
+
+% ¿Quiénes son los progenitores de Carlos?
+?- progenitor(Progenitor, 'Carlos').
+
+% ¿Quién es el abuelo de Ana?
+?- abuelo(Abuelo, 'Ana').
+
+% ¿Carlos tiene hermanos?
+?- hermano(Hermano, 'Carlos').
+
+% ¿Luis tiene antepasados?
+?- antepasado(Antepasado, 'Luis').

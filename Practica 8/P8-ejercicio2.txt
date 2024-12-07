@@ -1,0 +1,60 @@
+% Base de datos de personas, gustos y habilidades
+puede_trasladar('Juan', 'Capital').
+puede_trasladar('Juan', 'Mendoza').
+puede_trasladar('Maria', 'Córdoba').
+puede_trasladar('Carlos', 'Córdoba').
+puede_trasladar('Carlos', 'Exterior').
+puede_trasladar('Ana', 'Capital').
+
+gusta_trabajar('Juan', 'Lider').
+gusta_trabajar('Juan', 'Programador').
+gusta_trabajar('Maria', 'Analista').
+gusta_trabajar('Maria', 'Diseñador').
+gusta_trabajar('Carlos', 'Programador').
+gusta_trabajar('Ana', 'Lider').
+gusta_trabajar('Ana', 'Analista').
+
+tiene_habilidad('Juan', 'Buena comunicacion').
+tiene_habilidad('Juan', 'JavaScript').
+tiene_habilidad('Maria', 'UML').
+tiene_habilidad('Maria', 'PHP').
+tiene_habilidad('Carlos', 'Python').
+tiene_habilidad('Carlos', 'JavaScript').
+tiene_habilidad('Ana', 'Buena comunicacion').
+tiene_habilidad('Ana', 'UML').
+
+% Relación de habilidades con roles
+habilidad_relacion_rol('Buena comunicacion', 'Lider').
+habilidad_relacion_rol('Python', 'Programador').
+habilidad_relacion_rol('JavaScript', 'Programador').
+habilidad_relacion_rol('UML', 'Analista').
+habilidad_relacion_rol('UML', 'Diseñador').
+
+% Predicado para personas disponibles
+personas_disponibles(Persona, Rol, Localidad) :-
+    puede_trasladar(Persona, Localidad),
+    gusta_trabajar(Persona, Rol),
+    tiene_habilidad(Persona, Habilidad),
+    habilidad_relacion_rol(Habilidad, Rol).
+
+% Predicado para verificar aptitud
+es_apta(Persona, Rol) :-
+    gusta_trabajar(Persona, Rol),
+    tiene_habilidad(Persona, Habilidad),
+    habilidad_relacion_rol(Habilidad, Rol).
+
+% Consultas de los incisos:
+
+% Personas disponibles para un rol en una localidad:
+?- personas_disponibles(Persona, 'Programador', 'Córdoba').
+
+% Personas disponibles para un rol:
+?- personas_disponibles(Persona, 'Programador', _).
+% El guión bajo (_) permite cualquier localidad
+% Mostrará todas las personas aptas para Programador en cualquier localidad
+
+% Roles que puede ocupar una persona:
+?- es_apta(Persona, Rol).
+
+% Verificar si una persona es apta para un rol: 
+?- es_apta('Juan', 'Programador').

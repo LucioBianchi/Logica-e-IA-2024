@@ -1,0 +1,20 @@
+% Base de hechos
+accion_buena(ayudar).
+accion_mala(mentir).
+
+realiza_accion(sebastian, ayudar).
+realiza_accion(sebastian, mentir).
+
+% Reglas definidas
+es_bueno(Persona) :-
+    realiza_accion(Persona, Accion),
+    accion_buena(Accion).
+
+es_malo(Persona) :-
+    realiza_accion(Persona, Accion),
+    accion_mala(Accion).
+
+% Consulta
+
+?- es_bueno(sebastian).
+?- es_malo(sebastian).

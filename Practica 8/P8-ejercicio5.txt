@@ -1,0 +1,53 @@
+% Vacunas y sus características
+
+% Edad mínima para cada vacuna
+edad_minima(sinopharm, 3).    % 3 años
+edad_minima(moderna, 0.5).    % 0.5 años (6 meses)
+edad_minima(comirnaty, 12).   % 12 años
+
+% Contraindicaciones para cada vacuna
+contraindicacion(sinopharm, hipersensibilidad).
+contraindicacion(sinopharm, enfermedades_cronicas).
+contraindicacion(sinopharm, trombocitopenia).
+contraindicacion(sinopharm, trastornos_coagulación).
+contraindicacion(sinopharm, epilepsia).
+
+contraindicacion(moderna, anafilaxia).
+contraindicacion(moderna, enfermedades_agudas).
+contraindicacion(moderna, trastornos_coagulación).
+contraindicacion(moderna, trombocitopenia).
+
+contraindicacion(comirnaty, anafilaxia).
+contraindicacion(comirnaty, enfermedades_agudas).
+contraindicacion(comirnaty, trastornos_coagulación).
+contraindicacion(comirnaty, trombocitopenia).
+
+% Comorbilidades de las personas
+persona(juan, 30, [hipertension, diabetes]).
+persona(maria, 25, [asma]).
+persona(luisa, 50, [enfermedades_cronicas, epilepsia]).
+
+% Verificar si una persona puede recibir una vacuna considerando edad mínima y contraindicaciones.
+
+puede_recibir_vacuna(Persona, Vacuna) :-
+    % Verificar edad mínima
+    persona(Persona, Edad, Comorbilidades),
+    edad_minima(Vacuna, EdadMinima),
+    Edad >= EdadMinima,
+    % Verificar que no tenga contraindicaciones
+    forall(contraindicacion(Vacuna, Contraindicacion), 
+           \+ member(Contraindicacion, Comorbilidades)).
+
+
+% Verificar cuál vacuna puede recibir una persona
+
+vacuna_adecuada(Persona, Vacuna) :-
+    puede_recibir_vacuna(Persona, Vacuna).
+
+% Consultas
+
+% Verificar si Juan puede recibir la vacuna Moderna
+?- puede_recibir_vacuna(juan, moderna).
+
+% Consultar que vacuna puede recibir una persona
+?- vacuna_adecuada(juan, Vacuna).
